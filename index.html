@@ -444,7 +444,30 @@ ul{list-style:none}
 }
 .modal-x:hover{background:rgba(255,255,255,.18)}
 
-/* ══════════════════ ANIMATIONS ══════════════════ */
+/* ══════════════════ GALLERY MODAL ══════════════════ */
+.gal-btn{
+  position:absolute;top:50%;transform:translateY(-50%);
+  background:rgba(0,0,0,.55);border:none;color:#fff;
+  font-size:1.8rem;line-height:1;cursor:pointer;z-index:2;
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+}
+.gal-btn:hover{background:rgba(0,0,0,.82)}
+.gal-prev{left:.6rem}
+.gal-next{right:.6rem}
+.gal-dots{
+  position:absolute;bottom:.6rem;left:50%;transform:translateX(-50%);
+  display:flex;gap:.4rem;
+}
+.gal-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(255,255,255,.4);border:none;cursor:pointer;padding:0;
+  transition:background .2s,transform .2s;
+}
+.gal-dot.active{background:#fff;transform:scale(1.25)}
+.gallery-track img{width:100%;height:260px;object-fit:cover;flex-shrink:0}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeRight{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
@@ -730,18 +753,20 @@ ul{list-style:none}
     <p class="sec-desc" style="max-width:540px;margin:0 auto">A selection of projects across AR, IoT, UI/UX, Data Analysis, and Mobile Development.</p>
   </div>
   <div class="projects-grid obs"><div class="proj-card" style="animation-delay:0ms"
-      onclick="openModal(this)"
-      data-title="PRIMA KP - Portal Informasi &amp; Monitoring Kehadiran" data-desc="PRIMA KP (Portal Informasi dan Monitoring Kehadiran Anak KP) adalah sistem berbasis web yang dikembangkan untuk Pusdiklat Keuangan Publik, BPPK, Kementerian Keuangan RI. Portal ini digunakan untuk mengelola dan memonitor jadwal Work From Home (WFH) pegawai sesuai KMK No. 416 Tahun 2023 tentang Sistem Kerja Fleksibel, dilengkapi dengan dashboard kalender real-time, sistem login berbasis NIP, rekap kehadiran otomatis, serta panel admin untuk pengelolaan data pegawai. Dibangun selama program magang sebagai Full-Stack Developer Intern."
-      data-url="https://github.com/primakp2026/PRIMA-KP" data-img="img/primakp-home.png"
-      data-label="View on GitHub ↗" data-color="#FBBF24">
+      onclick="openModalGallery(this)"
+      data-title="PRIMA KP - Portal Informasi &amp; Monitoring Kehadiran"
+      data-desc="Web portal monitoring jadwal WFH &amp; kehadiran pegawai Pusdiklat Keuangan Publik, BPPK – Kemenkeu RI. Dibangun selama magang sebagai Full-Stack Developer Intern, dengan fitur login NIP, kalender real-time, dan panel admin."
+      data-url="https://github.com/primakp2026/PRIMA-KP"
+      data-label="View on GitHub ↗" data-color="#FBBF24"
+      data-gallery="img/primakp-login.png|img/primakp-dashboard.png|img/primakp-home.png">
       <div class="proj-img-wrap">
-        <img src="img/primakp-home.png" alt="PRIMA KP - Portal Informasi dan Monitoring Kehadiran"/>
+        <img src="img/primakp-login.png" alt="PRIMA KP - Portal Informasi dan Monitoring Kehadiran"/>
         <div class="proj-overlay"><span>View Details ↗</span></div>
       </div>
       <div class="proj-bar" style="background:linear-gradient(90deg,#FBBF24,transparent)"></div>
       <div class="proj-body">
         <div class="proj-title">PRIMA KP - Portal Informasi &amp; Monitoring Kehadiran</div>
-        <p class="proj-sub">Sistem monitoring kehadiran &amp; jadwal WFH pegawai Pusdiklat Keuangan Publik (BPPK Kemenkeu), lengkap dengan dashboard kalender, login NIP, dan panel admin.…</p>
+        <p class="proj-sub">Web portal monitoring WFH &amp; kehadiran pegawai Pusdiklat Keuangan Publik, BPPK – Kemenkeu RI. Magang Full-Stack Developer Intern.</p>
       </div></div>
 <div class="proj-card" style="animation-delay:80ms"
       onclick="openModal(this)"
@@ -965,7 +990,15 @@ ul{list-style:none}
 <div class="modal-bg" id="mb" onclick="cmOut(event)">
   <div class="modal">
     <button class="modal-x" onclick="cm()">✕</button>
-    <img id="mI" class="modal-img" src="" alt=""/>
+    <!-- Gallery slideshow area -->
+    <div class="modal-gallery" id="mGallery" style="display:none;position:relative;overflow:hidden;height:260px;background:#000">
+      <div class="gallery-track" id="gTrack" style="display:flex;height:100%;transition:transform .38s cubic-bezier(.4,0,.2,1)"></div>
+      <button class="gal-btn gal-prev" onclick="galSlide(-1)">&#8249;</button>
+      <button class="gal-btn gal-next" onclick="galSlide(1)">&#8250;</button>
+      <div class="gal-dots" id="gDots"></div>
+    </div>
+    <!-- Single image fallback -->
+    <img id="mI" class="modal-img" src="" alt="" style=""/>
     <div class="modal-body">
       <div class="modal-title" id="mT"></div>
       <p class="modal-desc" id="mD"></p>
@@ -1038,11 +1071,51 @@ document.querySelectorAll('.obs,.about-box,.tools-grid,.projects-grid,.certs-gri
   obsv.observe(el);
 });
 
-// Modal
-function openModal(c){
+// Modal + Gallery
+let galIdx=0,galImgs=[];
+function galSlide(dir){
+  galIdx=(galIdx+dir+galImgs.length)%galImgs.length;
+  document.getElementById('gTrack').style.transform=`translateX(-${galIdx*100}%)`;
+  document.querySelectorAll('.gal-dot').forEach((d,i)=>d.classList.toggle('active',i===galIdx));
+}
+function openModalGallery(c){
+  galImgs=(c.dataset.gallery||'').split('|').filter(Boolean);
+  const gallery=document.getElementById('mGallery');
+  const singleImg=document.getElementById('mI');
+  if(galImgs.length>1){
+    // Build slideshow
+    const track=document.getElementById('gTrack');
+    const dots=document.getElementById('gDots');
+    track.innerHTML='';dots.innerHTML='';galIdx=0;
+    galImgs.forEach((src,i)=>{
+      const img=document.createElement('img');img.src=src;img.alt='slide '+i;
+      track.appendChild(img);
+      const dot=document.createElement('button');dot.className='gal-dot'+(i===0?' active':'');
+      dot.onclick=(e)=>{e.stopPropagation();galIdx=i;galSlide(0);};
+      dots.appendChild(dot);
+    });
+    track.style.transform='translateX(0)';
+    gallery.style.display='block';
+    singleImg.style.display='none';
+  } else {
+    singleImg.src=c.dataset.img||galImgs[0]||'';
+    singleImg.style.display='block';
+    gallery.style.display='none';
+  }
   document.getElementById('mT').textContent=c.dataset.title;
   document.getElementById('mD').textContent=c.dataset.desc;
-  document.getElementById('mI').src=c.dataset.img;
+  const lnk=document.getElementById('mL');
+  lnk.href=c.dataset.url;lnk.textContent=c.dataset.label;
+  document.getElementById('mb').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function openModal(c){
+  document.getElementById('mGallery').style.display='none';
+  const singleImg=document.getElementById('mI');
+  singleImg.style.display='block';
+  singleImg.src=c.dataset.img;
+  document.getElementById('mT').textContent=c.dataset.title;
+  document.getElementById('mD').textContent=c.dataset.desc;
   const lnk=document.getElementById('mL');
   lnk.href=c.dataset.url;lnk.textContent=c.dataset.label;
   document.getElementById('mb').classList.add('open');
@@ -1050,7 +1123,11 @@ function openModal(c){
 }
 function cm(){document.getElementById('mb').classList.remove('open');document.body.style.overflow='';}
 function cmOut(e){if(e.target===document.getElementById('mb'))cm();}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')cm();});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')cm();
+  if(e.key==='ArrowRight'&&galImgs.length>1)galSlide(1);
+  if(e.key==='ArrowLeft'&&galImgs.length>1)galSlide(-1);
+});
 
 // Chat
 const clrs=['#8b5cf6','#06b6d4','#10b981','#f59e0b','#ef4444'];
