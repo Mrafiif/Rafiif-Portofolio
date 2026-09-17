@@ -229,7 +229,7 @@ ul{list-style:none}
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
 .col-title{font-family:'Literata',serif;font-size:1.02rem;font-weight:600}
-.tl-item{position:relative;padding-left:1.6rem;margin-bottom:2.1rem}
+.tl-item{position:relative;padding-left:1.6rem;padding-right:70px;margin-bottom:2.1rem}
 .tl-item::before{
   content:'';position:absolute;left:5px;top:20px;bottom:-2.1rem;
   width:2px;background:linear-gradient(#3A352E,transparent);border-radius:2px;
@@ -243,7 +243,7 @@ ul{list-style:none}
 .tl-period{font-size:.74rem;color:#A9C89A;font-weight:600;display:block;margin-bottom:.35rem}
 .tl-role{font-family:'Literata',serif;font-size:1.05rem;font-weight:600;margin-bottom:.2rem}
 .tl-org{font-size:.82rem;color:#B8B0A2;margin-bottom:.7rem;display:flex;align-items:center;gap:.55rem}
-.tl-org-logo{width:24px;height:24px;object-fit:contain;background:#2E2A25;border:1px solid #3A352E;border-radius:8px;padding:3px;flex-shrink:0}
+.tl-org-logo-big{position:absolute;top:0;right:0;width:56px;height:56px;object-fit:contain;background:#2E2A25;border:1px solid #3A352E;border-radius:14px;padding:7px}
 .tl-focus{font-size:.85rem;color:#C7C2AF;line-height:1.75}
 .tl-points li{
   font-size:.85rem;color:#C7C2AF;line-height:1.75;
@@ -485,6 +485,8 @@ ul{list-style:none}
   .ham{display:flex}
   .footer{flex-direction:column;align-items:center;text-align:center}
   .tl-org{justify-content:center}
+  .tl-item{padding-right:1.6rem}
+  .tl-org-logo-big{position:static;margin:0 auto 1rem;display:block}
 }
 @media(max-width:640px){
   .tools-grid{grid-template-columns:repeat(2,1fr)}
@@ -622,7 +624,8 @@ ul{list-style:none}
       <div class="tl-body">
         <span class="tl-period">2022 — Present</span>
         <div class="tl-role">Bachelor of Informatics</div>
-        <div class="tl-org"><img src="img/logo-uai.png" alt="Universitas Al-Azhar Indonesia" class="tl-org-logo"/>Universitas Al-Azhar Indonesia</div>
+        <img src="img/logo-uai.png" alt="Universitas Al-Azhar Indonesia" class="tl-org-logo-big"/>
+        <div class="tl-org">Universitas Al-Azhar Indonesia</div>
         <div class="tl-focus">Focusing on Data Analyst, Software Development, Cybersecurity, and AI.</div>
       </div></div>
 <div class="tl-item">
@@ -630,7 +633,8 @@ ul{list-style:none}
       <div class="tl-body">
         <span class="tl-period">2018 — 2021</span>
         <div class="tl-role">Natural Sciences (IPA)</div>
-        <div class="tl-org"><img src="img/logo-sman74.png" alt="SMAN 74 Jakarta" class="tl-org-logo"/>SMAN 74 Jakarta</div>
+        <img src="img/logo-sman74.png" alt="SMAN 74 Jakarta" class="tl-org-logo-big"/>
+        <div class="tl-org">SMAN 74 Jakarta</div>
         <div class="tl-focus">Strong foundation in Mathematics and Logic for Informatics.</div>
       </div></div>
 
@@ -647,7 +651,8 @@ ul{list-style:none}
       <div class="tl-body">
         <span class="tl-period">Jun 2026 — Present</span>
         <div class="tl-role">IT Support Intern</div>
-        <div class="tl-org"><img src="img/logo-yili.png" alt="PT Yili Indonesia Dairy" class="tl-org-logo"/>PT Yili Indonesia Dairy (Yili Group)</div>
+        <img src="img/logo-yili.png" alt="PT Yili Indonesia Dairy" class="tl-org-logo-big"/>
+        <div class="tl-org">PT Yili Indonesia Dairy (Yili Group)</div>
         <ul class="tl-points"><li>Planned and deployed new Wi-Fi Access Points (APs) while revamping existing network infrastructure to improve connectivity.</li><li>Managed employee data backup and archiving processes to Network Attached Storage (NAS) during offboarding.</li><li>Conducted deep-dive analysis and troubleshooting for anomalous hardware, software, and network issues.</li><li>Handled OS installation, application configuration, and systematic IT asset inventory tracking.</li><li>Provided technical helpdesk support to resolve daily IT operational issues for internal staff.</li></ul>
       </div></div>
 <div class="tl-item">
@@ -655,7 +660,8 @@ ul{list-style:none}
       <div class="tl-body">
         <span class="tl-period">Mar 2026 — Jun 2026</span>
         <div class="tl-role">Full-Stack Developer Intern</div>
-        <div class="tl-org"><img src="img/logo-kemenkeu.png" alt="Kementerian Keuangan Republik Indonesia" class="tl-org-logo"/>Kementerian Keuangan Republik Indonesia — Pusdiklat Keuangan Publik, BPPK</div>
+        <img src="img/logo-kemenkeu.png" alt="Kementerian Keuangan Republik Indonesia" class="tl-org-logo-big"/>
+        <div class="tl-org">Kementerian Keuangan Republik Indonesia — Pusdiklat Keuangan Publik, BPPK</div>
         <ul class="tl-points"><li>Built "PRIMA KP", a full-stack WFH scheduling web app replacing manual spreadsheets, implementing Row Level Security (RLS) on PostgreSQL.</li><li>Designed and developed "AINote-KP / CoP-AI", an automated meeting minutes system using Speech-to-Text technology.</li><li>Formulated technical documentation and final strategic reports presented to the central unit.</li></ul>
       </div></div>
 <div class="tl-item">
@@ -663,7 +669,8 @@ ul{list-style:none}
       <div class="tl-body">
         <span class="tl-period">2025 — 2026</span>
         <div class="tl-role">President</div>
-        <div class="tl-org"><img src="img/logo-bem.png" alt="BEM FST UAI" class="tl-org-logo"/>BEM FST UAI</div>
+        <img src="img/logo-bem.png" alt="BEM FST UAI" class="tl-org-logo-big"/>
+        <div class="tl-org">BEM FST UAI</div>
         <ul class="tl-points"><li>Leading the faculty's executive body and coordinating all departments.</li><li>Initiating strategic programs including seminars and social activities.</li><li>Acting as primary student representative for FST in university forums.</li></ul>
       </div></div>
 <div class="tl-item">
@@ -671,7 +678,8 @@ ul{list-style:none}
       <div class="tl-body">
         <span class="tl-period">2024 — 2025</span>
         <div class="tl-role">Chairman</div>
-        <div class="tl-org"><img src="img/logo-hmif.png" alt="HMIF UAI" class="tl-org-logo"/>HMIF UAI</div>
+        <img src="img/logo-hmif.png" alt="HMIF UAI" class="tl-org-logo-big"/>
+        <div class="tl-org">HMIF UAI</div>
         <ul class="tl-points"><li>Managed organization activities for academic and non-academic development.</li><li>Initiated technology workshops, competitions, and seminars (FORTEX 5.0).</li><li>Collaborated with external organizations and stakeholders.</li></ul>
       </div></div>
 
