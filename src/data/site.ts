@@ -2,12 +2,13 @@
 export const site = {
   name: 'Muhammad Rafiif Dzakwan',
   shortName: 'Rafiif Dzakwan',
+  firstName: 'Rafiif',
+  lastName: 'Dzakwan',
   initials: 'RD',
   handle: '@mrafiif',
   role: 'Full-Stack Developer & IT Support',
   location: 'Jakarta, Indonesia',
-  email: 'mrafiifdzakwan@gmail.com',
-  tagline: 'I build practical web apps that replace manual work — and keep the infrastructure behind them running.',
+  email: 'mrafif85.mr@gmail.com',
   description:
     'Muhammad Rafiif Dzakwan — final-year Informatics student, Full-Stack Developer and IT Support Intern based in Jakarta. Portfolio of AI-powered web apps, internal tools and network projects.',
   // TODO: replace with the link to your latest CV (Google Drive "anyone with the link", or put the PDF in public/files/ and use '/files/cv.pdf')
@@ -15,15 +16,14 @@ export const site = {
   openToWork: true,
   socials: {
     github: 'https://github.com/Mrafiif',
-    linkedin: 'https://linkedin.com/in/mrafiif',
-    instagram: 'https://instagram.com/mrafiif',
+    linkedin: 'https://www.linkedin.com/in/muhammad-rafiif-16b4a8245',
+    instagram: 'https://www.instagram.com/mrafiif.85',
   },
 } as const;
 
 export const nav = [
+  { href: '/#top', label: 'Home' },
   { href: '/#about', label: 'About' },
-  { href: '/#experience', label: 'Experience' },
   { href: '/#projects', label: 'Projects' },
-  { href: '/#skills', label: 'Skills' },
   { href: '/#contact', label: 'Contact' },
 ] as const;

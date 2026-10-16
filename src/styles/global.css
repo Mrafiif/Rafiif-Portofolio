@@ -1,39 +1,44 @@
 @import "tailwindcss";
 
 /* ───────────── Design tokens ─────────────
-   Warm "paper & ink" palette with a sage accent.
+   High-tech palette: near-black with electric cyan + violet (dark),
+   cool paper with deep cyan + violet (light).
    Components only use the semantic names below (bg-surface, text-muted, ...),
    so light/dark is handled entirely here. */
 :root {
   color-scheme: light;
-  --bg: #f6f2ea;
-  --surface: #fffdf8;
-  --surface-2: #efe9dd;
-  --line: #e2dacb;
-  --ink: #1d1b17;
-  --muted: #6a6357;
-  --faint: #958d7f;
-  --accent: #4a7535;
-  --accent-soft: #e2ebd8;
-  --accent-ink: #f8f6ef;
-  --warm: #9a6a18;
-  --shadow: 0 1px 2px rgb(40 30 10 / 0.04), 0 12px 32px -12px rgb(40 30 10 / 0.12);
+  --bg: #f2f5f9;
+  --surface: #ffffff;
+  --surface-2: #e8edf4;
+  --line: #d3dbe6;
+  --ink: #0a0f18;
+  --muted: #4d596b;
+  --faint: #7a8597;
+  --accent: #0e7490;
+  --accent-2: #6d28d9;
+  --accent-soft: #dcf2f7;
+  --accent-ink: #ffffff;
+  --grid: rgb(10 15 24 / 0.05);
+  --glow: rgb(14 116 144 / 0.18);
+  --shadow: 0 1px 2px rgb(10 15 24 / 0.05), 0 16px 40px -18px rgb(10 15 24 / 0.18);
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #141310;
-  --surface: #1b1a16;
-  --surface-2: #24221d;
-  --line: #322e27;
-  --ink: #f1ece2;
-  --muted: #aaa293;
-  --faint: #7d766a;
-  --accent: #a6c78f;
-  --accent-soft: #263022;
-  --accent-ink: #141310;
-  --warm: #ddb56b;
-  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 20px 40px -16px rgb(0 0 0 / 0.55);
+  --bg: #05070b;
+  --surface: #0a0e15;
+  --surface-2: #10151f;
+  --line: #1b2331;
+  --ink: #e7eef8;
+  --muted: #8d99ac;
+  --faint: #5d6879;
+  --accent: #22d3ee;
+  --accent-2: #a78bfa;
+  --accent-soft: #0a2730;
+  --accent-ink: #03131a;
+  --grid: rgb(148 180 220 / 0.05);
+  --glow: rgb(34 211 238 / 0.22);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 24px 48px -20px rgb(0 0 0 / 0.7);
 }
 
 @theme inline {
@@ -45,11 +50,13 @@
   --color-muted: var(--muted);
   --color-faint: var(--faint);
   --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
   --color-accent-soft: var(--accent-soft);
   --color-accent-ink: var(--accent-ink);
-  --color-warm: var(--warm);
 
-  --font-serif: var(--font-fraunces);
+  /* "serif" is kept as the heading alias so existing font-serif classes pick up the new face. */
+  --font-serif: var(--font-space-grotesk);
+  --font-display: var(--font-unbounded);
   --font-sans: var(--font-geist);
   --font-mono: var(--font-geist-mono);
 
@@ -59,14 +66,25 @@
 /* ───────────── Base ───────────── */
 @layer base {
   html {
-    scroll-behavior: smooth;
     scroll-padding-top: 5rem;
     -webkit-text-size-adjust: 100%;
   }
   body {
     @apply bg-bg text-ink font-sans antialiased;
-    font-feature-settings: "ss01", "cv11";
     text-rendering: optimizeLegibility;
+  }
+  /* Fixed blueprint grid behind everything. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, black 40%, transparent 100%);
   }
   ::selection {
     background: var(--accent);
@@ -77,11 +95,11 @@
     outline-offset: 3px;
     border-radius: 6px;
   }
-  h1, h2, h3 {
+  h1, h2, h3, h4 {
     @apply font-serif;
-    font-optical-sizing: auto;
     text-wrap: balance;
   }
+  em { font-style: normal; }
   p { text-wrap: pretty; }
 }
 
@@ -91,29 +109,41 @@
     @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
   }
   .eyebrow {
-    @apply font-mono text-xs tracking-wider text-accent uppercase;
+    @apply font-mono text-xs tracking-[0.18em] text-accent uppercase;
   }
   .section-title {
-    @apply font-serif text-3xl leading-tight font-normal tracking-tight sm:text-4xl;
+    @apply font-serif text-3xl leading-tight font-medium tracking-tight sm:text-5xl;
+  }
+  /* Gradient text, e.g. the rotating phrase in the hero. */
+  .text-gradient {
+    background: linear-gradient(100deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   .card {
-    @apply rounded-2xl border border-line bg-surface;
+    @apply rounded-2xl border border-line bg-surface transition-[border-color,box-shadow] duration-300;
+  }
+  .card:hover {
+    border-color: color-mix(in oklab, var(--accent) 40%, var(--line));
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent) 12%, transparent), 0 20px 50px -24px var(--glow);
   }
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-2.5 py-1 text-xs text-muted;
+    @apply inline-flex items-center gap-1.5 rounded-md border border-line bg-surface-2/60 px-2 py-0.5 font-mono text-[11px] tracking-wide text-muted;
   }
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-[background-color,border-color,color,transform] duration-200 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-200 active:scale-[0.98];
   }
   /* Use together with .btn: class="btn btn-primary" */
   .btn-primary {
-    @apply bg-ink text-bg hover:bg-accent hover:text-accent-ink;
+    @apply bg-accent text-accent-ink;
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent) 60%, transparent), 0 8px 28px -8px var(--glow);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 0 1px var(--accent), 0 10px 36px -6px var(--glow);
   }
   .btn-ghost {
-    @apply border border-line bg-surface text-ink hover:border-accent hover:text-accent;
-  }
-  .link-underline {
-    @apply underline decoration-line decoration-1 underline-offset-4 transition-colors hover:decoration-accent;
+    @apply border border-line bg-surface/60 text-ink backdrop-blur hover:border-accent hover:text-accent;
   }
 }
 
@@ -133,9 +163,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Scroll cue line in the intro. */
+@keyframes scrollcue {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
 }

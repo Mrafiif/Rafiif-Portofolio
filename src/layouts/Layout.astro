@@ -13,9 +13,11 @@ interface Props {
   title?: string;
   description?: string;
   image?: ImageMetadata;
+  /** The page starts with a full-bleed section that sits under the fixed header. */
+  overlayHeader?: boolean;
 }
 
-const { title, description = site.description, image = profile } = Astro.props;
+const { title, description = site.description, image = profile, overlayHeader = false } = Astro.props;
 const pageTitle = title ? `${title} — ${site.shortName}` : `${site.name} — ${site.role}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const og = await getImage({ src: image, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
@@ -44,8 +46,8 @@ const personLd = {
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <meta name="theme-color" content="#f6f2ea" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#141310" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f2f5f9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#05070b" media="(prefers-color-scheme: dark)" />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />
@@ -56,7 +58,8 @@ const personLd = {
 
     <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
 
-    <Font cssVariable="--font-fraunces" preload />
+    <Font cssVariable="--font-unbounded" preload />
+    <Font cssVariable="--font-space-grotesk" preload />
     <Font cssVariable="--font-geist" preload />
     <Font cssVariable="--font-geist-mono" />
 
@@ -79,7 +82,7 @@ const personLd = {
       Skip to content
     </a>
     <Header />
-    <main id="main">
+    <main id="main" class:list={[!overlayHeader && 'pt-16']}>
       <slot />
     </main>
     <Footer />

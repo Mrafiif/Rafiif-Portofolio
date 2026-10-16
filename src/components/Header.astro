@@ -1,30 +1,42 @@
 ---
 import Icon from './Icon.astro';
-import { site } from '../data/site';
-// Section navigation lives in the floating Dock (src/components/react/Dock.tsx).
+import { nav, site } from '../data/site';
+// On small screens section navigation lives in the floating Dock (src/components/react/Dock.tsx).
 ---
 
-<header class="sticky top-0 z-40 border-b border-transparent bg-bg/70 backdrop-blur-md transition-colors [&.scrolled]:border-line" data-header>
+<header class="fixed inset-x-0 top-0 z-40 border-b border-transparent transition-colors duration-300 [&.scrolled]:border-line [&.scrolled]:bg-bg/75 [&.scrolled]:backdrop-blur-md" data-header>
   <div class="container-page flex h-16 items-center justify-between gap-4">
-    <a href="/" class="group flex items-center gap-2.5" aria-label={`${site.name} — home`}>
-      <span class="grid size-8 place-items-center rounded-full bg-ink font-serif text-sm text-bg transition-colors group-hover:bg-accent group-hover:text-accent-ink">
-        {site.initials}
-      </span>
-      <span class="font-medium">{site.shortName}</span>
+    <a href="/" class="group font-display text-[15px] font-extrabold tracking-tight" aria-label={`${site.name} — home`}>
+      RAFIIF<span class="text-accent">.</span>DZ<span class="ml-0.5 inline-block w-2 animate-pulse text-accent">_</span>
     </a>
+
+    <nav aria-label="Main" class="hidden md:block">
+      <ul class="flex items-center gap-8 font-mono text-[11px] tracking-[0.22em] text-muted uppercase">
+        {nav.map((item) => (
+          <li>
+            <a href={item.href} class="relative py-2 transition-colors hover:text-ink after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-accent after:transition-transform hover:after:scale-x-100">
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
 
     <div class="flex items-center gap-2">
       <button
         type="button"
-        class="grid size-9 place-items-center rounded-full border border-line bg-surface text-muted transition-colors hover:text-ink"
+        class="grid size-9 place-items-center rounded-full border border-line bg-surface/60 text-muted backdrop-blur transition-colors hover:border-accent hover:text-accent"
         aria-label="Toggle color theme"
         data-theme-toggle
       >
         <Icon name="sun" class="hidden [[data-theme=dark]_&]:block" />
         <Icon name="moon" class="block [[data-theme=dark]_&]:hidden" />
       </button>
-      <a href={site.cvUrl} target="_blank" rel="noopener" class="btn btn-primary !px-4 !py-2">
-        <Icon name="download" size={15} /> CV
+      <a
+        href="/#contact"
+        class="rounded-md border border-ink/80 px-4 py-2 font-mono text-[11px] font-medium tracking-[0.18em] uppercase transition-colors hover:border-accent hover:bg-accent hover:text-accent-ink"
+      >
+        Contact me
       </a>
     </div>
   </div>
@@ -32,7 +44,7 @@ import { site } from '../data/site';
 
 <script>
   const onScroll = () =>
-    document.querySelector('[data-header]')?.classList.toggle('scrolled', window.scrollY > 8);
+    document.querySelector('[data-header]')?.classList.toggle('scrolled', window.scrollY > 24);
   window.addEventListener('scroll', onScroll, { passive: true });
 
   function setup() {

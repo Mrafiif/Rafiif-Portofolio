@@ -18,15 +18,15 @@ function canUse3D() {
 function StaticCard({ info }: { info: CardInfo }) {
   return (
     <div className="flex h-full items-center justify-center pt-10">
-      <div className="w-60 rotate-[-4deg] overflow-hidden rounded-2xl border border-line bg-[#f6f2ea] text-[#1d1b17] shadow-card">
-        <div className="flex items-center gap-2 bg-[#1d1b17] px-4 py-3 text-[#f6f2ea]">
-          <span className="grid size-7 place-items-center rounded-full bg-[#a6c78f] font-serif text-xs text-[#1d1b17]">RD</span>
-          <span className="text-xs font-semibold tracking-wide">PORTFOLIO PASS</span>
+      <div className="w-60 rotate-[-4deg] overflow-hidden rounded-2xl border border-[#1d2a3a] bg-[#070a10] text-[#e7eef8] shadow-card">
+        <div className="flex items-center gap-2 border-b-2 border-[#22d3ee] bg-[#0e1520] px-4 py-3">
+          <span className="grid size-7 place-items-center rounded-md border border-[#22d3ee] font-mono text-[10px] text-[#22d3ee]">RD</span>
+          <span className="text-xs font-semibold tracking-wide">ACCESS PASS</span>
         </div>
-        <img src={info.photo} alt="" className="mx-4 mt-4 aspect-[4/5] w-[calc(100%-2rem)] rounded-lg object-cover object-[50%_25%]" />
+        <img src={info.photo} alt="" className="mx-4 mt-4 aspect-[4/3.3] w-[calc(100%-2rem)] rounded-lg object-cover object-[50%_25%]" />
         <div className="p-4">
-          <p className="font-serif text-lg">{info.name}</p>
-          <p className="font-serif text-sm italic text-[#4a7535]">{info.role}</p>
+          <p className="text-lg font-semibold">{info.name}</p>
+          <p className="font-mono text-[10px] tracking-wider text-[#22d3ee] uppercase">{info.role}</p>
         </div>
       </div>
     </div>

@@ -34,9 +34,9 @@ const stats = [
 ];
 ---
 
-<section id="top" class="relative overflow-hidden">
+<section id="hello" class="relative scroll-mt-16 overflow-hidden">
   <DotGrid client:idle />
-  <div class="container-page relative grid items-center gap-6 pt-10 pb-12 sm:pt-14 lg:grid-cols-[1.2fr_1fr] lg:gap-10">
+  <div class="container-page relative grid items-center gap-6 pt-16 pb-12 sm:pt-24 lg:grid-cols-[1.2fr_1fr] lg:gap-10">
     <div class="relative z-10">
       {site.openToWork && (
         <p class="chip mb-6 !border-transparent !bg-accent-soft !text-accent">
@@ -65,7 +65,7 @@ const stats = [
           <a href="#projects" class="btn btn-primary">See my work <Icon name="arrow-right" size={15} /></a>
         </Magnet>
         <Magnet client:visible>
-          <a href="#contact" class="btn btn-ghost"><Icon name="mail" size={15} /> Get in touch</a>
+          <a href={site.cvUrl} target="_blank" rel="noopener" class="btn btn-ghost"><Icon name="download" size={15} /> Download CV</a>
         </Magnet>
       </div>
 

@@ -72,13 +72,15 @@ export default function Dock() {
   const reduce = useReducedMotion();
   const [magnify, setMagnify] = useState(false);
   const [current, setCurrent] = useState('top');
-  const [shown, setShown] = useState(true);
+  const [footerVisible, setFooterVisible] = useState(false);
+  const [introVisible, setIntroVisible] = useState(false);
+  const shown = !footerVisible && !introVisible;
 
   useEffect(() => {
     setMagnify(matchMedia('(pointer: fine)').matches && !reduce);
   }, [reduce]);
 
-  // Track which section is in view; hide the dock when the footer is reached so it never covers content.
+  // Track which section is in view; hide the dock over the intro and the footer so it never covers content.
   useEffect(() => {
     const ids = ['top', 'about', 'experience', 'projects', 'skills', 'contact'];
     const observer = new IntersectionObserver(
@@ -92,11 +94,16 @@ export default function Dock() {
       if (el) observer.observe(el);
     });
     const footer = document.querySelector('footer');
-    const fo = new IntersectionObserver(([e]) => setShown(!e.isIntersecting));
+    const fo = new IntersectionObserver(([e]) => setFooterVisible(e.isIntersecting));
     if (footer) fo.observe(footer);
+    // Stay out of the way while the full-screen intro is mostly in view.
+    const intro = document.querySelector('section[aria-label="Intro"]');
+    const io = new IntersectionObserver(([e]) => setIntroVisible(e.intersectionRatio > 0.4), { threshold: [0, 0.4, 1] });
+    if (intro) io.observe(intro);
     return () => {
       observer.disconnect();
       fo.disconnect();
+      io.disconnect();
     };
   }, []);
 

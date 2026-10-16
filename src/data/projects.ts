@@ -17,6 +17,13 @@ import cisco from '../assets/projects/misc/cisco.png';
 import zoowhiz from '../assets/projects/misc/zoowhiz.png';
 import netflix from '../assets/projects/misc/netflix.png';
 import weather from '../assets/projects/misc/weather.png';
+import dpAfter from '../assets/projects/doorprize/08-after.jpg';
+import dpHome from '../assets/projects/doorprize/01-home.jpg';
+import dpOpening from '../assets/projects/doorprize/03-opening.jpg';
+import dpIntro from '../assets/projects/doorprize/04-intro.jpg';
+import dpSpinning from '../assets/projects/doorprize/06-spinning.jpg';
+import dpPopup from '../assets/projects/doorprize/07-popup.jpg';
+import dpSettings from '../assets/projects/doorprize/settings-prizes.jpg';
 
 export interface Project {
   slug: string;
@@ -35,6 +42,10 @@ export interface Project {
   cover: ImageMetadata;
   gallery?: { src: ImageMetadata; alt: string }[];
   links?: { label: string; href: string }[];
+  /** Short facts shown in the case-study sidebar, e.g. Role / Timeline / Scale. */
+  facts?: { label: string; value: string }[];
+  /** Demo video served from public/, shown on the case-study page. */
+  video?: { src: string; caption?: string };
   /** Featured projects get the large cards at the top. */
   featured?: boolean;
   /** Draft projects are not rendered anywhere. Flip to false once the content is ready. */
@@ -42,6 +53,45 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  {
+    // Demo version. After the event: fill in the outcome below and add the GitHub link.
+    slug: 'door-prize-system',
+    title: 'Door Prize Draw System',
+    summary: 'Slot-machine style raffle for a company anniversary event — readable on an LED screen, fair by design, and fully offline.',
+    context: 'Company anniversary event',
+    year: '2026',
+    category: 'Web App',
+    featured: true,
+    overview:
+      'A single-page web app that runs the door prize draw at a company anniversary event: 312 participants, 20 prizes and 103 winners. The operator runs the whole show with one key — home banner, 3-2-1 opening, a reveal for every prize, then all winner boxes spin at once and stop one by one. Brand names in the visuals are anonymized and participant names are sample data.',
+    problem:
+      'Most company door prize draws run on a generic spin-wheel website: one name at a time, small text, nothing tied to the event. The brief asked for slot-machine name boxes with the prize photo beside them, readable from the back of the room on an LED screen, and reliable on the day with no internet dependency.',
+    highlights: [
+      'Fair draw: winners picked with crypto.getRandomValues at the moment the operator presses stop, and nobody can win twice.',
+      '“Not present? Redraw” sets an absent winner aside and draws again in one click.',
+      'Operator panel: import employees from CSV/Excel with automatic de-duplication, manage prizes and photos, export winners to Excel.',
+      'One-key show flow with keyboard shortcuts for every action (next prize, redraw, fullscreen, mute).',
+      'Built for event-day risk: runs fully offline from one folder, auto-saves every draw (localStorage + IndexedDB), backup/restore to JSON, plus a PowerPoint Plan B.',
+      'Three.js sky scene (clouds, balloons, stars) behind the draw, designed first in Figma with a mapped user flow.',
+    ],
+    stack: ['JavaScript', 'Three.js', 'HTML & CSS', 'IndexedDB', 'Figma'],
+    facts: [
+      { label: 'Role', value: 'Concept, UI/UX design, front-end build (AI-assisted)' },
+      { label: 'Timeline', value: '~2 weeks, October 2026' },
+      { label: 'Scale', value: '312 participants · 20 prizes · 103 winners' },
+    ],
+    cover: dpAfter,
+    video: { src: '/media/doorprize-demo.mp4', caption: 'Demo run of the full show flow.' },
+    gallery: [
+      { src: dpHome, alt: 'Home banner: waiting screen before the draw' },
+      { src: dpOpening, alt: '3-2-1 opening with the DOORPRIZE title drop' },
+      { src: dpIntro, alt: 'Prize intro: photo and number of winners' },
+      { src: dpSpinning, alt: 'Every winner box spinning at once' },
+      { src: dpPopup, alt: 'Winner announcement card' },
+      { src: dpAfter, alt: 'Winners stay on screen until the next prize' },
+      { src: dpSettings, alt: 'Operator panel: prize management' },
+    ],
+  },
   {
     slug: 'ainote-kp',
     title: 'AINOTE-KP',
@@ -121,23 +171,6 @@ export const projects: Project[] = [
       { src: primaHome, alt: 'PRIMA KP schedule calendar' },
     ],
     links: [{ label: 'GitHub', href: 'https://github.com/primakp2026/PRIMA-KP' }],
-  },
-  {
-    // TODO: fill in real details and set draft: false to publish.
-    // Needed: stack, features, how many participants/events used it, screenshots in src/assets/projects/doorprize/.
-    // Make sure you have permission to use the Yili name, and blur any employee names/IDs in screenshots.
-    slug: 'yili-doorprize',
-    title: 'Yili Doorprize System',
-    summary: 'Lucky-draw system for internal events at PT Yili Indonesia Dairy.',
-    context: 'Internship · PT Yili Indonesia Dairy',
-    year: '2026',
-    category: 'Web App',
-    featured: true,
-    draft: true,
-    overview: 'TODO',
-    highlights: [],
-    stack: [],
-    cover: primaLogin, // TODO: replace with a doorprize screenshot
   },
   {
     slug: 'campus-network',

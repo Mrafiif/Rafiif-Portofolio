@@ -21,7 +21,7 @@ export default function HeroHeadline({ intro, lead, rotating }: Props) {
   const words = intro.split(' ');
 
   return (
-    <h1 className="text-[clamp(2.3rem,7vw,4.75rem)] leading-[1.04] font-light tracking-tight">
+    <h2 className="text-[clamp(2.3rem,7vw,4.75rem)] leading-[1.04] font-light tracking-tight">
       <span className="sr-only">
         {intro} {lead} {rotating.join(' ')}
       </span>
@@ -51,7 +51,7 @@ export default function HeroHeadline({ intro, lead, rotating }: Props) {
           <AnimatePresence mode="wait" initial={false}>
             <motion.em
               key={rotating[index]}
-              className="inline-block font-normal text-accent"
+              className="text-gradient inline-block font-medium"
               initial={{ y: '100%', opacity: 0 }}
               animate={{ y: '0%', opacity: 1 }}
               exit={{ y: '-100%', opacity: 0 }}
@@ -62,6 +62,6 @@ export default function HeroHeadline({ intro, lead, rotating }: Props) {
           </AnimatePresence>
         </span>
       </span>
-    </h1>
+    </h2>
   );
 }

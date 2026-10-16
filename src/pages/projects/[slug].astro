@@ -94,6 +94,12 @@ const gallery = p.gallery ?? [];
             <dt class="eyebrow !text-faint">Category</dt>
             <dd class="mt-1.5">{p.category}</dd>
           </div>
+          {p.facts?.map((f) => (
+            <div class="p-5">
+              <dt class="eyebrow !text-faint">{f.label}</dt>
+              <dd class="mt-1.5">{f.value}</dd>
+            </div>
+          ))}
           <div class="p-5">
             <dt class="eyebrow !text-faint">Stack</dt>
             <dd class="mt-2.5 flex flex-wrap gap-1.5">
@@ -103,6 +109,16 @@ const gallery = p.gallery ?? [];
         </dl>
       </aside>
     </div>
+
+    {p.video && (
+      <section class="mt-20">
+        <h2 class="mb-6 font-serif text-2xl">Demo</h2>
+        <figure class="overflow-hidden rounded-2xl border border-line bg-surface-2">
+          <video src={p.video.src} poster={p.cover.src} controls playsinline preload="none" class="aspect-video w-full bg-black"></video>
+        </figure>
+        {p.video.caption && <p class="mt-2 text-sm text-faint">{p.video.caption}</p>}
+      </section>
+    )}
 
     {gallery.length > 0 && (
       <section class="mt-20">

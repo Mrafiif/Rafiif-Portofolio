@@ -7,6 +7,7 @@ Interactive pieces are React islands in `src/components/react/`:
 
 | Component         | What it does                                                        |
 | ----------------- | ------------------------------------------------------------------- |
+| `IntroHero`       | Full-screen intro: giant name, cut-out portrait, parallax, HUD      |
 | `Lanyard`         | 3D ID card on a physics rope (three.js + Rapier), drag to swing it  |
 | `LanyardIsland`   | Static card first, lazy-loads the 3D lanyard when the browser idles |
 | `HeroHeadline`    | Blur-in headline with rotating phrase                               |
@@ -44,6 +45,9 @@ All content lives in `src/data/` — no need to touch components:
 - `certifications.ts` — certificates
 
 Images go in `src/assets/` and are optimized automatically at build time.
+Videos go in `public/media/` and are referenced from a project's `video` field.
+
+The intro portrait is `src/assets/portrait-cutout.png` (transparent background). To change it, replace that file with another PNG cut-out of the same style.
 
 ### Adding a project
 

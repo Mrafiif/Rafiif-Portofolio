@@ -17,12 +17,20 @@ export default defineConfig({
   },
   fonts: [
     {
+      // Display face for the giant intro name and the wordmark.
       provider: fontProviders.google(),
-      name: 'Fraunces',
-      cssVariable: '--font-fraunces',
+      name: 'Unbounded',
+      cssVariable: '--font-unbounded',
+      weights: ['500 900'],
+      fallbacks: ['system-ui', 'sans-serif'],
+    },
+    {
+      // Headings.
+      provider: fontProviders.google(),
+      name: 'Space Grotesk',
+      cssVariable: '--font-space-grotesk',
       weights: ['300 700'],
-      styles: ['normal', 'italic'],
-      fallbacks: ['Georgia', 'serif'],
+      fallbacks: ['system-ui', 'sans-serif'],
     },
     {
       provider: fontProviders.google(),

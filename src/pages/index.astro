@@ -8,6 +8,13 @@ import Skills from '../components/sections/Skills.astro';
 import Certifications from '../components/sections/Certifications.astro';
 import Contact from '../components/sections/Contact.astro';
 import VelocityMarquee from '../components/react/VelocityMarquee';
+import IntroHero from '../components/react/IntroHero';
+import { getImage } from 'astro:assets';
+import { site } from '../data/site';
+import portraitCutout from '../assets/portrait-cutout.png';
+
+// Transparent cut-out portrait for the intro (keeps alpha as WebP).
+const portrait = await getImage({ src: portraitCutout, width: 684, format: 'webp', quality: 85 });
 
 const marqueeRows = [
   ['Full-Stack Development', 'AI Integration', 'Speech-to-Text', 'IT Infrastructure'],
@@ -15,7 +22,16 @@ const marqueeRows = [
 ];
 ---
 
-<Layout>
+<Layout overlayHeader>
+  <IntroHero
+    client:load
+    firstName={site.firstName}
+    lastName={site.lastName}
+    portrait={{ src: portrait.src, width: Number(portrait.attributes.width), height: Number(portrait.attributes.height) }}
+    roles={['Full-Stack Developer', 'IT Support Intern @ Yili', 'AI Tool Builder', 'Ex-Intern @ Kemenkeu RI']}
+    location={site.location}
+    socials={site.socials}
+  />
   <Hero />
   <About />
   <Experience />

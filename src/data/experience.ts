@@ -29,6 +29,7 @@ export const experience: TimelineItem[] = [
       'Diagnosed and resolved anomalous hardware, software and network issues through structured troubleshooting.',
       'Handled OS installation, application configuration and systematic IT asset inventory tracking.',
       'Provided day-to-day helpdesk support for internal staff.',
+      'Designed and built a slot-machine style door prize system for the company anniversary event (312 participants, 20 prizes).',
     ],
     tags: ['Networking', 'Wi-Fi AP', 'NAS', 'Helpdesk', 'Asset Management'],
   },
