@@ -1,0 +1,92 @@
+---
+import { getImage } from 'astro:assets';
+import Icon from '../Icon.astro';
+import HeroHeadline from '../react/HeroHeadline';
+import Magnet from '../react/Magnet';
+import CountUp from '../react/CountUp';
+import DotGrid from '../react/DotGrid';
+import LanyardIsland from '../react/LanyardIsland';
+import { site } from '../../data/site';
+import { experience } from '../../data/experience';
+import { publishedProjects } from '../../data/projects';
+import { certifications } from '../../data/certifications';
+import profile from '../../assets/profile.jpg';
+
+const current = experience[0];
+
+// Photo for the 3D ID card texture (and its static fallback).
+const cardPhoto = await getImage({ src: profile, width: 800, format: 'webp', quality: 82 });
+const cardInfo = {
+  photo: cardPhoto.src,
+  name: site.shortName,
+  role: 'Full-Stack Developer',
+  org: 'IT Support Intern · Yili Group',
+  location: site.location,
+  handle: site.handle,
+};
+
+// Derived from the data files so the numbers can never drift out of sync again.
+const stats = [
+  { value: publishedProjects.filter((p) => p.context.startsWith('Internship')).length, label: 'apps built during internships' },
+  { value: experience.filter((e) => e.kind === 'work').length, label: 'internships, gov & industry' },
+  { value: experience.filter((e) => e.kind === 'leadership').length, label: 'student organizations led' },
+  { value: certifications.length, label: 'certifications' },
+];
+---
+
+<section id="top" class="relative overflow-hidden">
+  <DotGrid client:idle />
+  <div class="container-page relative grid items-center gap-6 pt-10 pb-12 sm:pt-14 lg:grid-cols-[1.2fr_1fr] lg:gap-10">
+    <div class="relative z-10">
+      {site.openToWork && (
+        <p class="chip mb-6 !border-transparent !bg-accent-soft !text-accent">
+          <span class="relative flex size-2">
+            <span class="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60"></span>
+            <span class="relative inline-flex size-2 rounded-full bg-accent"></span>
+          </span>
+          Open to opportunities
+        </p>
+      )}
+
+      <HeroHeadline
+        client:load
+        intro="Hi, I’m Rafiif."
+        lead="I build"
+        rotating={['full-stack web apps.', 'AI document tools.', 'reliable networks.']}
+      />
+
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted">
+        Final-year Informatics student at Universitas Al-Azhar Indonesia. Former full-stack intern at the Ministry of
+        Finance, now {current.role} at Yili Group.
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <Magnet client:visible>
+          <a href="#projects" class="btn btn-primary">See my work <Icon name="arrow-right" size={15} /></a>
+        </Magnet>
+        <Magnet client:visible>
+          <a href="#contact" class="btn btn-ghost"><Icon name="mail" size={15} /> Get in touch</a>
+        </Magnet>
+      </div>
+
+      <p class="mt-8 flex items-center gap-1.5 text-sm text-faint">
+        <Icon name="map-pin" size={14} /> {site.location}
+      </p>
+    </div>
+
+    <div class="relative -mx-4 h-[520px] sm:mx-0 lg:h-[640px]">
+      <LanyardIsland client:load info={cardInfo} />
+    </div>
+  </div>
+</section>
+
+<section aria-label="Highlights" class="container-page pb-16">
+  <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4">
+    {stats.map((s) => (
+      <div class="flex flex-col bg-surface p-5 sm:p-6">
+        <dt class="text-sm text-muted">{s.label}</dt>
+        <dd class="order-first font-serif text-4xl font-light tracking-tight"><CountUp client:visible to={s.value} /></dd>
+      </div>
+    ))}
+  </dl>
+</section>

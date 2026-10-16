@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<Layout title="Page not found">
+  <section class="container-page grid min-h-[70dvh] place-items-center py-20 text-center">
+    <div class="max-w-md">
+      <p class="font-serif text-8xl font-light text-accent">404</p>
+      <h1 class="mt-4 text-3xl font-light tracking-tight">This page doesn’t exist.</h1>
+      <p class="mt-4 text-muted">The link may be old, or the page has moved.</p>
+      <a href="/" class="btn btn-primary mt-8"><Icon name="arrow-left" size={15} /> Back to home</a>
+    </div>
+  </section>
+</Layout>

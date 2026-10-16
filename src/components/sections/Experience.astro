@@ -1,0 +1,73 @@
+---
+import { Image } from 'astro:assets';
+import Icon from '../Icon.astro';
+import SectionHeading from '../SectionHeading.astro';
+import { experience, education } from '../../data/experience';
+---
+
+<section id="experience" class="border-y border-line bg-surface-2/50">
+  <div class="container-page py-20 sm:py-28">
+    <SectionHeading
+      eyebrow="Experience"
+      title="Where I’ve worked and led"
+      intro="Two internships — one in government software, one in corporate IT — plus two terms leading student organizations."
+    />
+
+    <div class="grid gap-14 lg:grid-cols-[1fr_20rem] lg:gap-16">
+      <ol class="relative space-y-4">
+        {experience.map((item) => (
+          <li class="card reveal grid gap-5 p-5 sm:grid-cols-[3.5rem_1fr] sm:p-7">
+            <Image
+              src={item.logo}
+              alt=""
+              width={112}
+              height={112}
+              class="size-14 rounded-xl border border-line bg-white object-contain p-1.5"
+            />
+            <div>
+              <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                <h3 class="font-serif text-xl">{item.role}</h3>
+                <p class="font-mono text-xs text-faint">{item.period}</p>
+              </div>
+              <p class="mt-1 flex items-center gap-1.5 text-sm text-muted">
+                <Icon name={item.kind === 'work' ? 'briefcase' : 'users'} size={14} />
+                {item.org}
+              </p>
+              <ul class="mt-4 space-y-2 text-[0.95rem] leading-relaxed text-muted">
+                {item.points.map((pt) => (
+                  <li class="relative pl-5 before:absolute before:top-[0.7em] before:left-0 before:size-1.5 before:rounded-full before:bg-accent">
+                    {pt}
+                  </li>
+                ))}
+              </ul>
+              {item.tags && (
+                <ul class="mt-5 flex flex-wrap gap-1.5">
+                  {item.tags.map((t) => <li class="chip">{t}</li>)}
+                </ul>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <aside>
+        <h3 class="mb-5 flex items-center gap-2 font-mono text-xs tracking-wider text-faint uppercase">
+          <Icon name="cap" size={15} /> Education
+        </h3>
+        <ol class="space-y-4">
+          {education.map((item) => (
+            <li class="card reveal flex gap-4 p-5">
+              <Image src={item.logo} alt="" width={96} height={96} class="size-12 shrink-0 rounded-lg border border-line bg-white object-contain p-1" />
+              <div>
+                <p class="font-mono text-xs text-faint">{item.period}</p>
+                <p class="mt-1 font-medium">{item.role}</p>
+                <p class="text-sm text-muted">{item.org}</p>
+                <p class="mt-2 text-sm leading-relaxed text-muted">{item.points[0]}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </aside>
+    </div>
+  </div>
+</section>

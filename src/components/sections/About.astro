@@ -1,0 +1,55 @@
+---
+import Icon, { type IconName } from '../Icon.astro';
+import SectionHeading from '../SectionHeading.astro';
+
+const pillars: { icon: IconName; title: string; body: string }[] = [
+  {
+    icon: 'code',
+    title: 'Build',
+    body: 'Full-stack web apps with clean data models and secure access — like PRIMA KP, which replaced spreadsheet-based WFH scheduling.',
+  },
+  {
+    icon: 'sparkles',
+    title: 'Automate',
+    body: 'Speech-to-text and LLM pipelines that turn hours of recordings into official documents, ready to sign.',
+  },
+  {
+    icon: 'server',
+    title: 'Support',
+    body: 'Network deployment, backups and hands-on troubleshooting so the people using the software can keep working.',
+  },
+];
+---
+
+<section id="about" class="container-page py-20 sm:py-28">
+  <div class="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
+    <SectionHeading eyebrow="About" title="Developer by training, problem-solver by habit." />
+    <div class="space-y-5 text-lg leading-relaxed text-muted">
+      <p>
+        I’m <span class="text-ink">Muhammad Rafiif Dzakwan</span>, a final-year Informatics student at Universitas
+        Al-Azhar Indonesia with interests in software development, data and cybersecurity.
+      </p>
+      <p>
+        At the <span class="text-ink">Ministry of Finance (BPPK)</span> I shipped three internal tools as a full-stack
+        intern. Now at <span class="text-ink">Yili Group</span> I work on the other side of the stack — Wi-Fi rollouts,
+        NAS backups and daily helpdesk. Seeing both sides makes me build software that is easier to run and support.
+      </p>
+      <p>
+        I also led the Faculty of Science &amp; Technology student executive board as President, and the informatics
+        student association before that — so I’m comfortable coordinating people, not just code.
+      </p>
+    </div>
+  </div>
+
+  <ul class="mt-16 grid gap-4 sm:grid-cols-3">
+    {pillars.map((p) => (
+      <li class="card reveal p-6">
+        <span class="mb-5 grid size-10 place-items-center rounded-xl bg-accent-soft text-accent">
+          <Icon name={p.icon} size={18} />
+        </span>
+        <h3 class="mb-2 font-serif text-xl">{p.title}</h3>
+        <p class="text-sm leading-relaxed text-muted">{p.body}</p>
+      </li>
+    ))}
+  </ul>
+</section>

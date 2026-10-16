@@ -1,0 +1,189 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import { publishedProjects, type Project } from '../../data/projects';
+
+export const getStaticPaths = (() =>
+  publishedProjects.map((project, i) => ({
+    params: { slug: project.slug },
+    props: { project, next: publishedProjects[(i + 1) % publishedProjects.length] },
+  }))) satisfies GetStaticPaths;
+
+interface Props {
+  project: Project;
+  next: Project;
+}
+
+const { project: p, next } = Astro.props;
+const gallery = p.gallery ?? [];
+---
+
+<Layout title={p.title} description={p.summary} image={p.cover}>
+  <article class="container-page pt-8 pb-20 sm:pt-12">
+    <a href="/#projects" class="inline-flex items-center gap-1.5 text-sm text-muted hover:text-ink">
+      <Icon name="arrow-left" size={15} /> All projects
+    </a>
+
+    <header class="mt-10 max-w-3xl">
+      <p class="font-mono text-xs text-faint">{p.context}{p.year && ` · ${p.year}`}</p>
+      <h1 class="mt-3 text-[clamp(2.4rem,6vw,4rem)] leading-[1.05] font-light tracking-tight" transition:name={`title-${p.slug}`}>
+        {p.title}
+      </h1>
+      <p class="mt-5 text-xl leading-relaxed text-muted">{p.summary}</p>
+      {p.links && p.links.length > 0 && (
+        <div class="mt-8 flex flex-wrap gap-3">
+          {p.links.map((l, i) => (
+            <a href={l.href} target="_blank" rel="noopener" class:list={['btn', i === 0 ? 'btn-primary' : 'btn-ghost']}>
+              {l.label} <Icon name="arrow-up-right" size={15} />
+            </a>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div class="mt-12 overflow-hidden rounded-3xl border border-line bg-surface-2">
+      <Image
+        src={p.cover}
+        alt={`${p.title} — main screenshot`}
+        widths={[640, 1000, 1400]}
+        sizes="(min-width: 1152px) 1088px, 100vw"
+        class="w-full object-cover"
+        loading="eager"
+        transition:name={`cover-${p.slug}`}
+      />
+    </div>
+
+    <div class="mt-16 grid gap-12 lg:grid-cols-[1fr_18rem] lg:gap-20">
+      <div class="max-w-2xl space-y-12">
+        <section>
+          <h2 class="mb-4 font-serif text-2xl">Overview</h2>
+          <p class="text-lg leading-relaxed text-muted">{p.overview}</p>
+        </section>
+
+        {p.problem && (
+          <section>
+            <h2 class="mb-4 font-serif text-2xl">The problem</h2>
+            <p class="text-lg leading-relaxed text-muted">{p.problem}</p>
+          </section>
+        )}
+
+        {p.highlights.length > 0 && (
+          <section>
+            <h2 class="mb-4 font-serif text-2xl">What I built</h2>
+            <ul class="space-y-3">
+              {p.highlights.map((h) => (
+                <li class="flex gap-3 text-lg leading-relaxed text-muted">
+                  <Icon name="check" size={18} class="mt-1.5 shrink-0 text-accent" />
+                  <span>{h}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </div>
+
+      <aside class="lg:sticky lg:top-24 lg:self-start">
+        <dl class="card divide-y divide-line text-sm">
+          <div class="p-5">
+            <dt class="eyebrow !text-faint">Context</dt>
+            <dd class="mt-1.5">{p.context}</dd>
+          </div>
+          <div class="p-5">
+            <dt class="eyebrow !text-faint">Category</dt>
+            <dd class="mt-1.5">{p.category}</dd>
+          </div>
+          <div class="p-5">
+            <dt class="eyebrow !text-faint">Stack</dt>
+            <dd class="mt-2.5 flex flex-wrap gap-1.5">
+              {p.stack.map((s) => <span class="chip">{s}</span>)}
+            </dd>
+          </div>
+        </dl>
+      </aside>
+    </div>
+
+    {gallery.length > 0 && (
+      <section class="mt-20">
+        <h2 class="mb-6 font-serif text-2xl">Screens</h2>
+        <ul class="grid gap-4 sm:grid-cols-2">
+          {gallery.map((g, i) => (
+            <li>
+              <button
+                type="button"
+                class="group block w-full overflow-hidden rounded-2xl border border-line bg-surface-2 text-left"
+                data-lightbox-index={i}
+                aria-label={`Enlarge: ${g.alt}`}
+              >
+                <Image
+                  src={g.src}
+                  alt={g.alt}
+                  widths={[500, 800]}
+                  sizes="(min-width: 640px) 50vw, 100vw"
+                  class="aspect-[16/9] w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+              </button>
+              <p class="mt-2 text-sm text-faint">{g.alt}</p>
+            </li>
+          ))}
+        </ul>
+
+        <dialog
+          class="m-auto max-h-[92dvh] w-[min(1200px,94vw)] max-w-none overflow-visible bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm"
+          data-lightbox
+        >
+          {gallery.map((g, i) => (
+            <figure class="hidden [&.active]:block" data-slide={i}>
+              <Image src={g.src} alt={g.alt} widths={[1000, 1600]} sizes="94vw" class="max-h-[80dvh] w-full rounded-xl object-contain" loading="lazy" />
+              <figcaption class="mt-3 text-center text-sm text-white/80">{g.alt} · {i + 1}/{gallery.length}</figcaption>
+            </figure>
+          ))}
+          <div class="mt-3 flex justify-center gap-2">
+            <button type="button" class="grid size-10 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20" data-lightbox-prev aria-label="Previous image"><Icon name="arrow-left" /></button>
+            <button type="button" class="grid size-10 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20" data-lightbox-close aria-label="Close"><Icon name="x" /></button>
+            <button type="button" class="grid size-10 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20" data-lightbox-next aria-label="Next image"><Icon name="arrow-right" /></button>
+          </div>
+        </dialog>
+      </section>
+    )}
+
+    <nav aria-label="Next project" class="mt-24 border-t border-line pt-10">
+      <a href={`/projects/${next.slug}/`} class="group flex items-center justify-between gap-6">
+        <div>
+          <p class="eyebrow !text-faint">Next project</p>
+          <p class="mt-2 font-serif text-3xl tracking-tight group-hover:text-accent">{next.title}</p>
+        </div>
+        <Icon name="arrow-right" size={28} class="shrink-0 transition-transform group-hover:translate-x-1" />
+      </a>
+    </nav>
+  </article>
+</Layout>
+
+<script>
+  function setupLightbox() {
+    const dialog = document.querySelector<HTMLDialogElement>('[data-lightbox]');
+    if (!dialog) return;
+    const slides = [...dialog.querySelectorAll<HTMLElement>('[data-slide]')];
+    let index = 0;
+    const show = (i: number) => {
+      index = (i + slides.length) % slides.length;
+      slides.forEach((s, n) => s.classList.toggle('active', n === index));
+    };
+    document.querySelectorAll<HTMLElement>('[data-lightbox-index]').forEach((btn) =>
+      btn.addEventListener('click', () => {
+        show(Number(btn.dataset.lightboxIndex));
+        dialog.showModal();
+      }),
+    );
+    dialog.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => show(index - 1));
+    dialog.querySelector('[data-lightbox-next]')?.addEventListener('click', () => show(index + 1));
+    dialog.querySelector('[data-lightbox-close]')?.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(index - 1);
+      if (e.key === 'ArrowRight') show(index + 1);
+    });
+  }
+  document.addEventListener('astro:page-load', setupLightbox);
+</script>

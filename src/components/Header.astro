@@ -1,0 +1,52 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+// Section navigation lives in the floating Dock (src/components/react/Dock.tsx).
+---
+
+<header class="sticky top-0 z-40 border-b border-transparent bg-bg/70 backdrop-blur-md transition-colors [&.scrolled]:border-line" data-header>
+  <div class="container-page flex h-16 items-center justify-between gap-4">
+    <a href="/" class="group flex items-center gap-2.5" aria-label={`${site.name} — home`}>
+      <span class="grid size-8 place-items-center rounded-full bg-ink font-serif text-sm text-bg transition-colors group-hover:bg-accent group-hover:text-accent-ink">
+        {site.initials}
+      </span>
+      <span class="font-medium">{site.shortName}</span>
+    </a>
+
+    <div class="flex items-center gap-2">
+      <button
+        type="button"
+        class="grid size-9 place-items-center rounded-full border border-line bg-surface text-muted transition-colors hover:text-ink"
+        aria-label="Toggle color theme"
+        data-theme-toggle
+      >
+        <Icon name="sun" class="hidden [[data-theme=dark]_&]:block" />
+        <Icon name="moon" class="block [[data-theme=dark]_&]:hidden" />
+      </button>
+      <a href={site.cvUrl} target="_blank" rel="noopener" class="btn btn-primary !px-4 !py-2">
+        <Icon name="download" size={15} /> CV
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const onScroll = () =>
+    document.querySelector('[data-header]')?.classList.toggle('scrolled', window.scrollY > 8);
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  function setup() {
+    onScroll();
+    document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
+      const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      // Cross-fade the theme change where View Transitions are supported.
+      const apply = () => {
+        document.documentElement.dataset.theme = next;
+        try { localStorage.setItem('theme', next); } catch {}
+      };
+      if (document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.startViewTransition(apply);
+      else apply();
+    });
+  }
+  document.addEventListener('astro:page-load', setup);
+</script>

@@ -1,0 +1,33 @@
+---
+import SectionHeading from '../SectionHeading.astro';
+import { skillGroups } from '../../data/skills';
+---
+
+<section id="skills" class="border-y border-line bg-surface-2/50">
+  <div class="container-page py-20 sm:py-28">
+    <SectionHeading eyebrow="Skills" title="Tools I reach for" intro="Grouped by what they help me do." />
+
+    <div class="grid gap-x-12 gap-y-10 md:grid-cols-2">
+      {skillGroups.map((group) => (
+        <div class="reveal border-t border-line pt-6">
+          <h3 class="font-serif text-xl">{group.title}</h3>
+          <p class="mt-1 text-sm text-muted">{group.blurb}</p>
+          <ul class="mt-5 flex flex-wrap gap-2">
+            {group.skills.map((s) => (
+              <li class="inline-flex items-center gap-2 rounded-full border border-line bg-surface py-1.5 pr-3.5 pl-2.5 text-sm">
+                {s.icon ? (
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill={`#${s.icon.hex}`} aria-hidden="true" class="[[data-theme=dark]_&]:fill-current [[data-theme=dark]_&]:text-muted">
+                    <path d={s.icon.path} />
+                  </svg>
+                ) : (
+                  <span class="mx-1 size-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+                )}
+                {s.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
