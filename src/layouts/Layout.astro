@@ -90,13 +90,37 @@ const personLd = {
     <Cursor client:only="react" transition:persist />
 
     <script>
-      // Smooth (inertia) scrolling. Skipped for reduced-motion users; native anchors keep working via Lenis.
+      // Smooth (inertia) scrolling. Skipped for reduced-motion users.
       import Lenis from 'lenis';
       import 'lenis/dist/lenis.css';
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        const lenis = new Lenis({ autoRaf: true, anchors: { offset: -80 } });
-        document.addEventListener('astro:after-swap', () => lenis.resize());
-      }
+
+      const lenis = matchMedia('(prefers-reduced-motion: reduce)').matches ? null : new Lenis({ autoRaf: true });
+      document.addEventListener('astro:after-swap', () => lenis?.resize());
+
+      // Same-page anchor links (e.g. "/#about" while on "/"). Handled here in the capture phase so that
+      // only one thing scrolls: letting Lenis, the browser's hash jump and Astro's router all react to the
+      // same click made them fight, and the page only moved a few pixels.
+      document.addEventListener(
+        'click',
+        (e) => {
+          if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+          const link = (e.target as Element | null)?.closest?.('a[href*="#"]') as HTMLAnchorElement | null;
+          if (!link || link.target === '_blank') return;
+          const url = new URL(link.href, location.href);
+          if (url.origin !== location.origin || url.pathname !== location.pathname || !url.hash) return;
+          const target = url.hash === '#top' ? 0 : document.getElementById(decodeURIComponent(url.hash.slice(1)));
+          if (target === null) return;
+
+          e.preventDefault();
+          e.stopPropagation();
+          // Both paths respect the html scroll-padding-top, which keeps sections clear of the fixed header.
+          if (lenis) lenis.scrollTo(target);
+          else if (target === 0) window.scrollTo({ top: 0 });
+          else target.scrollIntoView();
+          history.replaceState(history.state, '', url.hash);
+        },
+        { capture: true },
+      );
     </script>
   </body>
 </html>
