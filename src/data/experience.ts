@@ -14,6 +14,8 @@ export interface TimelineItem {
   kind: 'work' | 'leadership' | 'education';
   points: string[];
   tags?: string[];
+  /** Slugs from projects.ts, shown as linked cards under this role. */
+  projects?: string[];
 }
 
 export const experience: TimelineItem[] = [
@@ -29,9 +31,11 @@ export const experience: TimelineItem[] = [
       'Diagnosed and resolved anomalous hardware, software and network issues through structured troubleshooting.',
       'Handled OS installation, application configuration and systematic IT asset inventory tracking.',
       'Provided day-to-day helpdesk support for internal staff.',
-      'Designed and built a slot-machine style door prize system for the company anniversary event (312 participants, 20 prizes).',
+      'Designed and built a slot-machine style door prize system for the company anniversary event: 312 participants, 20 prizes and 103 winners, run by the operator with a single key.',
+      'Made the draw fair and event-proof: crypto-secure winner selection with no repeat winners, fully offline operation, auto-save, and a PowerPoint backup plan.',
     ],
-    tags: ['Networking', 'Wi-Fi AP', 'NAS', 'Helpdesk', 'Asset Management'],
+    tags: ['Networking', 'Wi-Fi AP', 'NAS', 'Helpdesk', 'Asset Management', 'JavaScript', 'Three.js'],
+    projects: ['door-prize-system'],
   },
   {
     period: 'Mar 2026 — Jun 2026',

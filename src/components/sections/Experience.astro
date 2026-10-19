@@ -3,6 +3,9 @@ import { Image } from 'astro:assets';
 import Icon from '../Icon.astro';
 import SectionHeading from '../SectionHeading.astro';
 import { experience, education } from '../../data/experience';
+import { publishedProjects } from '../../data/projects';
+
+const projectBySlug = new Map(publishedProjects.map((p) => [p.slug, p]));
 ---
 
 <section id="experience" class="border-y border-line bg-surface-2/50">
@@ -40,6 +43,20 @@ import { experience, education } from '../../data/experience';
                   </li>
                 ))}
               </ul>
+              {item.projects?.map((slug) => projectBySlug.get(slug)).filter((p) => p !== undefined).map((p) => (
+                <a
+                  href={`/projects/${p.slug}/`}
+                  class="group mt-5 flex items-center gap-4 rounded-xl border border-line bg-surface-2/60 p-3 transition-colors hover:border-accent/60"
+                >
+                  <Image src={p.cover} alt="" width={192} height={108} class="aspect-video w-24 shrink-0 rounded-lg object-cover sm:w-32" />
+                  <span class="min-w-0 flex-1">
+                    <span class="font-mono text-[10px] tracking-[0.18em] text-accent uppercase">Featured project</span>
+                    <span class="mt-0.5 block font-medium text-ink">{p.title}</span>
+                    <span class="mt-0.5 line-clamp-2 block text-sm text-muted">{p.summary}</span>
+                  </span>
+                  <Icon name="arrow-up-right" size={16} class="shrink-0 text-faint transition-colors group-hover:text-accent" />
+                </a>
+              ))}
               {item.tags && (
                 <ul class="mt-5 flex flex-wrap gap-1.5">
                   {item.tags.map((t) => <li class="chip">{t}</li>)}
