@@ -14,8 +14,6 @@ export interface TimelineItem {
   kind: 'work' | 'leadership' | 'education';
   points: string[];
   tags?: string[];
-  /** Slugs from projects.ts, shown as linked cards under this role. */
-  projects?: string[];
 }
 
 export const experience: TimelineItem[] = [
@@ -35,7 +33,6 @@ export const experience: TimelineItem[] = [
       'Made the draw fair and event-proof: crypto-secure winner selection with no repeat winners, fully offline operation, auto-save, and a PowerPoint backup plan.',
     ],
     tags: ['Networking', 'Wi-Fi AP', 'NAS', 'Helpdesk', 'Asset Management', 'JavaScript', 'Three.js'],
-    projects: ['door-prize-system'],
   },
   {
     period: 'Mar 2026 — Jun 2026',

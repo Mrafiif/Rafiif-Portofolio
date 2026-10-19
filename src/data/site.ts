@@ -11,8 +11,8 @@ export const site = {
   email: 'mrafif85.mr@gmail.com',
   description:
     'Muhammad Rafiif Dzakwan — final-year Informatics student, Full-Stack Developer and IT Support Intern based in Jakarta. Portfolio of AI-powered web apps, internal tools and network projects.',
-  // TODO: replace with the link to your latest CV (Google Drive "anyone with the link", or put the PDF in public/files/ and use '/files/cv.pdf')
-  cvUrl: 'https://drive.google.com/file/d/1_EN9Jg-o48tVtQkqqaXoDU-mfGNFjRER/view?usp=sharing',
+  // Google Drive link must be shared as "Anyone with the link".
+  cvUrl: 'https://drive.google.com/file/d/1BsZL6QJuVUaVwLFjtz1b7otVjj2vjk86/view?usp=sharing',
   openToWork: true,
   socials: {
     github: 'https://github.com/Mrafiif',
